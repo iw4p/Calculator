@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
     // MARK: - IBOutlets
     
     @IBOutlet weak var resultLabel: UILabel!
@@ -19,19 +19,18 @@ class ViewController: UIViewController {
     var firstNumber = String()
     var secondNumber = String()
     var lastNumber = Int()
-    var keyPressed = String()
     var isTypingNumber: Bool = false
     var operationTapped = String()
-    var isOperationTapped : Bool = false
-    var previousOperator = String()
+    var isOperationTapped = false
+    var done = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
     
     // MARK: - Action Buttons
-
+    
     @IBAction func NumberButtons(_ sender: UIButton) {
         
         if (!isTypingNumber) {
@@ -42,7 +41,7 @@ class ViewController: UIViewController {
             }
             resultLabel.text = String(lastNumber)
         }
-        
+            
         else if (isOperationTapped) {
             if let number = sender.currentTitle {
                 secondNumber = String(number)
@@ -52,13 +51,13 @@ class ViewController: UIViewController {
             secondNumber = String(lastNumber)
             resultLabel.text = firstNumber + " " + operationTapped + " " + secondNumber
         }
-
+        
     }
     
     
     @IBAction func operationButton(_ sender: UIButton) {
         
-        if (!isOperationTapped) {
+        if (!isOperationTapped && !done) {
             if let operation = sender.currentTitle {
                 firstNumber = String(lastNumber)
                 lastNumber = 0
@@ -69,52 +68,68 @@ class ViewController: UIViewController {
                 resultLabel.text = firstNumber + " " + operation
             }
         }
-
+        
         
     }
     
     @IBAction func equalButton(_ sender: UIButton) {
         
-        print("firstNumber is: " + firstNumber)
-        print("operationTapped is: " + operationTapped)
-        print("secondNumber is: " + secondNumber)
-                
-        guard let first = Int(firstNumber) else {
-            return
-        }
-        
-        guard let second = Int(secondNumber) else {
-            return
-        }
-        
-        if operationTapped == "+" {
-            resultLabel.text = String(first + second)
-        }
-        if operationTapped == "-" {
-            resultLabel.text = String(first - second)
-        }
-        if operationTapped == "*" {
-            resultLabel.text = String(first * second)
-        }
-        if operationTapped == "/" {
-            resultLabel.text = String(first / second)
-        }
 
+            
+            print("firstNumber is: " + firstNumber)
+            print("operationTapped is: " + operationTapped)
+            print("secondNumber is: " + secondNumber)
+            
+            guard let first = Int(firstNumber) else {
+                return
+            }
+            
+            guard let second = Int(secondNumber) else {
+                return
+            }
+            
+            if operationTapped == "+" {
+                resultLabel.text = String(first + second)
+                isOperationTapped = false
+            }
+            if operationTapped == "-" {
+                resultLabel.text = String(first - second)
+                isOperationTapped = false
+                
+            }
+            if operationTapped == "*" {
+                resultLabel.text = String(first * second)
+                isOperationTapped = false
+                
+            }
+            if operationTapped == "/" {
+                resultLabel.text = String(first / second)
+                isOperationTapped = false
+            }
+            
+            done = true
+            
+        
+        
     }
     
     @IBAction func clearButton(_ sender: UIButton) {
-        
+        clear()
+    }
+    
+    // MARK: - Functions
+    
+    func clear() {
         firstNumber = ""
         secondNumber = ""
         lastNumber = 0
         
+        done = false
         isTypingNumber = false
         isOperationTapped = false
-
+        
         operationTapped = ""
         resultLabel.text = ""
     }
-    
-
 }
 
