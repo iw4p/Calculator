@@ -24,7 +24,6 @@ class ViewController: UIViewController {
     var operationTapped = String()
     var isOperationTapped : Bool = false
     var previousOperator = String()
-    var midAnswer = Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,30 +38,35 @@ class ViewController: UIViewController {
             if let number = sender.currentTitle {
                 firstNumber = String(number)
                 lastNumber = lastNumber * 10 + Int(firstNumber)!
-
                 print(lastNumber)
             }
             resultLabel.text = String(lastNumber)
         }
         
-//        else if (isOperationTapped) {
-//            if let number = sender.currentTitle {
-//                secondNumber = String(number)
-//                print(number)
-//            }
-//        }
+        else if (isOperationTapped) {
+            if let number = sender.currentTitle {
+                secondNumber = String(number)
+                lastNumber = lastNumber * 10 + Int(secondNumber)!
+                print(lastNumber)
+            }
+            secondNumber = String(lastNumber)
+            resultLabel.text = firstNumber + " " + operationTapped + " " + secondNumber
+        }
 
     }
     
     
     @IBAction func operationButton(_ sender: UIButton) {
         
-        if (secondNumber != "") {
+        if (!isOperationTapped) {
             if let operation = sender.currentTitle {
+                firstNumber = String(lastNumber)
+                lastNumber = 0
                 operationTapped = String(operation)
-                isTypingNumber = false
+                isTypingNumber = true
                 isOperationTapped = true
                 print(operation)
+                resultLabel.text = firstNumber + " " + operation
             }
         }
 
@@ -70,13 +74,45 @@ class ViewController: UIViewController {
     }
     
     @IBAction func equalButton(_ sender: UIButton) {
+        
         print("firstNumber is: " + firstNumber)
         print("operationTapped is: " + operationTapped)
         print("secondNumber is: " + secondNumber)
+                
+        guard let first = Int(firstNumber) else {
+            return
+        }
+        
+        guard let second = Int(secondNumber) else {
+            return
+        }
+        
+        if operationTapped == "+" {
+            resultLabel.text = String(first + second)
+        }
+        if operationTapped == "-" {
+            resultLabel.text = String(first - second)
+        }
+        if operationTapped == "*" {
+            resultLabel.text = String(first * second)
+        }
+        if operationTapped == "/" {
+            resultLabel.text = String(first / second)
+        }
+
     }
     
     @IBAction func clearButton(_ sender: UIButton) {
         
+        firstNumber = ""
+        secondNumber = ""
+        lastNumber = 0
+        
+        isTypingNumber = false
+        isOperationTapped = false
+
+        operationTapped = ""
+        resultLabel.text = ""
     }
     
 
