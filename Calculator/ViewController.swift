@@ -51,7 +51,6 @@ class ViewController: UIViewController {
             secondNumber = String(lastNumber)
             resultLabel.text = firstNumber + " " + operationTapped + " " + secondNumber
         }
-        
     }
     
     
@@ -73,12 +72,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func equalButton(_ sender: UIButton) {
-        
 
-            
-            print("firstNumber is: " + firstNumber)
-            print("operationTapped is: " + operationTapped)
-            print("secondNumber is: " + secondNumber)
             
             guard let first = Int(firstNumber) else {
                 return
@@ -103,14 +97,13 @@ class ViewController: UIViewController {
                 
             }
             if operationTapped == "/" {
-                resultLabel.text = String(first / second)
+                // zero divided by zero
+                let result = divideByZero(a: first, b: second)
+                resultLabel.text = String(result)
                 isOperationTapped = false
             }
-            
+        
             done = true
-            
-        
-        
     }
     
     @IBAction func clearButton(_ sender: UIButton) {
@@ -131,5 +124,11 @@ class ViewController: UIViewController {
         operationTapped = ""
         resultLabel.text = ""
     }
+    
+    func divideByZero(a : Int, b : Int) -> Int {
+      if b == 0 { return 0 }
+      return a / b
+    }
+    
 }
 
